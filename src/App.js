@@ -1,88 +1,75 @@
-import React, { useState } from "react";
-import axios from "axios";
-import styled from "styled-components";
+import React, { useState } from 'react';
+import axios from 'axios';
+import './App.css';
 
 function App() {
-const API_KEY = "6c3b8ec558e36f8f98599f6070da6a43";
-const [result, setResult] = useState({});
-const [location, setLocation] = useState('')
 
-const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`
+  const API_KEY = "6c3b8ec558e36f8f98599f6070da6a43";
 
+  const [data, setData] = useState({}); 
+  const [location, setLocation] = useState('');
 
-const searchweather = async (e) => {
-  if (e.key === 'Enter') {
-    try {
-      const data = await axios({
-        method: "GET",
-        url:url
-      });
-      console.log(data)
-      setResult(data);
-    } 
-    catch (error) {
-      console.error("에러", error);
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${API_KEY}`;
+
+  const searchLocation = (event) => {
+    if (event.key === 'Enter') {
+      axios.get(url)
+        .then((response) => {
+          setData(response.data);
+          console.log(response.data);
+        })
+        setLocation('');
     }
-  }
-};
+  };
+  
   return (
-    <AppWrap>
-      <div className="appContentWrap">
-        <input 
-          type="text"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          placeholder="도시를 입력해주세요"
-          onKeyDown={searchweather}
+    <div className='app'>
+      <div className='search'>
+        <input
+        value={location}
+        onChange={event => setLocation(event.target.value)}
+        placeholder='도시를 입력해주세요'
+        type='text'
+        onKeyDown={searchLocation}
+        
         />
-        {Object.keys(result).length !== 0 && (
-          <ResultWrap>
-            <div className="city">{result.data.name}</div>
-            <div className="temp">{result.data.main.temp}</div>
-            <div className="sky">{result.data.weather[0].main}</div>
-          </ResultWrap>
-          )}
       </div>
-    </AppWrap>
+      <div className='container'>
+        <div className='top'>
+          <div className='location'>
+            <p>{data.name}</p>
+          </div>
+          <div className='temp'>
+            {data.main ? <h1>{data.main.temp.toFixed()}℉</h1> : null}
+            {/* <h1>{data.main.temp}</h1> */}
+          </div>
+          <div className='description'>
+            {data.weather ? <p>{data.weather[0].main}</p> : null}
+          </div>
+        </div>
+
+    {data.name != undefined && 
+            <div className='bottom'>
+            <div className='feels'>
+              {data.main ? <p className='bold'>{data.main.feels_like.toFixed()}℉</p> : null}
+              {/* <p className='bold'>60℉</p> */}
+              <p>체감온도</p>
+            </div>
+            <div className='humidity'>
+              {data.main ? <p className='blod'>{data.main.humidity}%</p> : null}
+              {/* <p className='bold'>20%</p> */}
+              <p>습도</p>
+            </div>
+            <div className='wind'>
+              {data.wind ? <p className='bold'>{data.wind.speed.toFixed()} MPH</p> : null}
+              {/* <p className='bold'>12 MPH</p> */}
+              <p>바람</p>
+            </div>
+          </div>
+    }
+      </div>
+    </div>
   );
 }
 
 export default App;
-
-const AppWrap = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-.appContentWrap {
-  left: 50%;
-  top: 50%;
-  transform: translateY(-50%, -50%);
-  position: absolute;
-  padding: 20px;
-}
-input {
-  padding: 16px;
-  border: 2px solid black;
-  border-radius: 16px;
-}
-`;
-
-const ResultWrap = styled.div`
-  margin-top: 60px;
-  padding: 10px;
-  border: 1px solid black;
-  border-radius: 8px;
-
-  .city{
-    fonst-size: 24px;
-  }
-  .temp{
-    font-size: 60px;
-    margin-top: 8px;
-  }
-  .sky{
-    fonst-size: 20px;
-    text-align: right;
-    margin-top: 8px;
-  }
-`;
