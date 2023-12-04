@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Search from './Component/Search';
+import TopContainer from './Component/TopContainer';
+import BottomContainer from './Component/BottomContainer';
 import './App.css';
 
 function App() {
@@ -9,64 +12,31 @@ function App() {
   const [data, setData] = useState({}); 
   const [location, setLocation] = useState('');
 
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${API_KEY}`;
+  // const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${API_KEY}`;
+  // const openAIKey = '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';
 
   const searchLocation = (event) => {
     if (event.key === 'Enter') {
-      axios.get(url)
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&lang=kr&appid=${API_KEY}`;
+      axios.get(weatherUrl)
         .then((response) => {
           setData(response.data);
-          console.log(response.data);
+          console.log("Weather Data:", response.data);
         })
-        setLocation('');
+        .catch(error => {
+          console.error("Weather API error:", error);
+        });
+      
+      setLocation('');
     }
   };
   
   return (
     <div className='app'>
-      <div className='search'>
-        <input
-        value={location}
-        onChange={event => setLocation(event.target.value)}
-        placeholder='도시를 입력해주세요'
-        type='text'
-        onKeyDown={searchLocation}
-        
-        />
-      </div>
+      <Search location={location} setLocation={setLocation} searchLocation={searchLocation} />
       <div className='container'>
-        <div className='top'>
-          <div className='location'>
-            <p>{data.name}</p>
-          </div>
-          <div className='temp'>
-            {data.main ? <h1>{data.main.temp.toFixed()}℉</h1> : null}
-            {/* <h1>{data.main.temp}</h1> */}
-          </div>
-          <div className='description'>
-            {data.weather ? <p>{data.weather[0].main}</p> : null}
-          </div>
-        </div>
-
-    {data.name != undefined && 
-            <div className='bottom'>
-            <div className='feels'>
-              {data.main ? <p className='bold'>{data.main.feels_like.toFixed()}℉</p> : null}
-              {/* <p className='bold'>60℉</p> */}
-              <p>체감온도</p>
-            </div>
-            <div className='humidity'>
-              {data.main ? <p className='blod'>{data.main.humidity}%</p> : null}
-              {/* <p className='bold'>20%</p> */}
-              <p>습도</p>
-            </div>
-            <div className='wind'>
-              {data.wind ? <p className='bold'>{data.wind.speed.toFixed()} MPH</p> : null}
-              {/* <p className='bold'>12 MPH</p> */}
-              <p>바람</p>
-            </div>
-          </div>
-    }
+        <TopContainer data={data} />
+        {data.name != undefined && <BottomContainer data={data} />}
       </div>
     </div>
   );
