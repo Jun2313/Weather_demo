@@ -9,10 +9,10 @@ import './App.css';
 
 function App() {
 
-
   const [data, setData] = useState({}); 
   const [location, setLocation] = useState('');
   const [advice, setAdvice] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const typeText = (text, delay = 50) => {
     let currentText = '';
@@ -32,7 +32,7 @@ function App() {
       if (weatherData) {
         setData(weatherData);
         setAdvice('');
-        const openAIText = await generateTextWithOpenAI(weatherData);
+        const openAIText = await generateTextWithOpenAI(weatherData, setIsLoading);
         typeText(openAIText, 50);
       }
       setLocation('');
@@ -43,7 +43,7 @@ function App() {
     <div className='app'>
       <Search location={location} setLocation={setLocation} handleSearch={handleSearch} />
       <div className='container'>
-        <TopContainer data={data} advice={advice} />
+        <TopContainer data={data} advice={advice} isLoading={isLoading} />
         {data.name != undefined && <BottomContainer data={data} />}
       </div>
     </div>

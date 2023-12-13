@@ -1,5 +1,6 @@
 import React from 'react';
 
+// 도시/수도 입력 컴포넌트
 const Search = ({ location, setLocation, handleSearch }) => {
   return (
     <div className='search'>

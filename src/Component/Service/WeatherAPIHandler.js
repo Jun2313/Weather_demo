@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const API_KEY = "6c3b8ec558e36f8f98599f6070da6a43";
 
+// 날씨 데이터를 가져오는 함수
 export const fetchWeatherData = async (city) => {
   const cleanCity = city.replace(/['"]+/g, '').trim();
 

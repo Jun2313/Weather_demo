@@ -1,6 +1,9 @@
 import React from 'react';
+import { useState } from 'react';
 
-const TopContainer = ({ data, advice }) => {
+const TopContainer = ({ data, advice, isLoading}) => {
+
+
   return (
     <div className='top'>
       <div className='location'>
@@ -13,6 +16,7 @@ const TopContainer = ({ data, advice }) => {
         {data.weather ? <p>{data.weather[0].main}</p> : null}
       </div>
       <div>
+      {isLoading && <div className="loader" style={{margin:'0 auto'}}></div>}
       <p>{advice}</p>
       </div>
     </div>

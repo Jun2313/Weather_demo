@@ -1,6 +1,10 @@
+import React, { useState } from 'react';
 import axios from 'axios';
 
-const OPENAI_API_KEY = "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";
+
+// const [isLoading, setIsLoading] = useState(false);
+
+const OPENAI_API_KEY = "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";
 
 //GPT번역함수
 export const translateCityName = async (cityName) => {
@@ -37,16 +41,18 @@ export const translateCityName = async (cityName) => {
 }
 };
 
-//GPT 텍스트함수
-export const generateTextWithOpenAI = async (weatherData) => {
-  const prompt = `Given today's weather in ${weatherData.name} with a temperature of ${weatherData.main.temp}°C and ${weatherData.weather[0].description}, how should one dress?`;
+//GPT 텍스트 생성함수
+export const generateTextWithOpenAI = async (weatherData, setIsLoading) => {
+  const prompt = `Given today's weather in ${weatherData.name} with a temperature of ${weatherData.main.temp}°C and ${weatherData.weather[0].description}, 옷을 어떻게 입어야할까?`;
 
   try {
+    setIsLoading(true);
+
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
         model: "gpt-3.5-turbo",
-        messages: [{ role: "system", content: "당신은 친절한 인공지능 챗봇입니다. 입력에 대해 한글로 변역해서 4줄로 짧고 간결하고 친절하게 대답해주세요" },
+        messages: [{ role: "system", content: "당신은 친절한 인공지능 챗봇입니다. 입력에 대해 한글로 변역해서 3줄로 짧고 간결하고 친절하게 대답해주세요" },
                     { role: "user", content: prompt }],
       },
       {
@@ -56,14 +62,17 @@ export const generateTextWithOpenAI = async (weatherData) => {
         },
       }
     );
-
+    setIsLoading(false);
     return response.data.choices[0].message.content;
+
   } catch (error) {
     if (error.response && error.response.status === 429) {
       console.error("Rate limit exceeded:", error.response.data);
+      setIsLoading(false);
       return "Rate limit exceeded, please try again later.";
     } else {
       console.error("Error with OpenAI API:", error);
+      setIsLoading(false);
       return "An error occurred, please try again later.";
     }
   }
