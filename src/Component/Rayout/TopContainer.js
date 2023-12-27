@@ -17,7 +17,9 @@ const TopContainer = ({ data, advice, isLoading}) => {
       </div>
       <div>
       {isLoading && <div className="loader" style={{margin:'0 auto'}}></div>}
+      <div className='advice-container'>
       <p>{advice}</p>
+      </div>
       </div>
     </div>
   );

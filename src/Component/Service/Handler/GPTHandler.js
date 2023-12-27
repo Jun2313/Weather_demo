@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-
-// const [isLoading, setIsLoading] = useState(false);
-
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = "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";
 
 //GPT번역함수
 export const translateCityName = async (cityName) => {
@@ -36,14 +33,15 @@ export const translateCityName = async (cityName) => {
   console.log("Translated City: ", translatedCity);
   return translatedCity;
 } catch (error) {
-  console.error("Error in translation:", error);
+  alert("Error in translation:", error);
   return cityName;
 }
 };
 
 //GPT 텍스트 생성함수
 export const generateTextWithOpenAI = async (weatherData, setIsLoading) => {
-  const prompt = `Given today's weather in ${weatherData.name} with a temperature of ${weatherData.main.temp}°C and ${weatherData.weather[0].description}, 옷을 어떻게 입어야할까?`;
+  const prompt = `Given today's weather in ${weatherData.name} with a temperature of ${weatherData.main.temp}°C and ${weatherData.weather[0].description}, 
+  옷을 어떻게 입어야하고, 직장인이 편하게 먹을수있는 추천 점심음식으로 어떤것을 먹으면 좋을까?`;
 
   try {
     setIsLoading(true);
@@ -52,7 +50,8 @@ export const generateTextWithOpenAI = async (weatherData, setIsLoading) => {
       'https://api.openai.com/v1/chat/completions',
       {
         model: "gpt-3.5-turbo",
-        messages: [{ role: "system", content: "당신은 친절한 인공지능 챗봇입니다. 입력에 대해 한글로 변역해서 3줄로 짧고 간결하고 친절하게 대답해주세요" },
+        messages: [{ role: "system", content: `당신은 친구같은 인공지능 챗봇입니다. 
+        입력에 대해 한글로 변역해서 3줄로 짧고 간결하고 파워블로거처럼 편안한 어조로 대답해주세요` },
                     { role: "user", content: prompt }],
       },
       {
