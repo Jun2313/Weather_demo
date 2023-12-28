@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import Search from './Component/Search';
 import TopContainer from './Component/Rayout/TopContainer';
 import BottomContainer from './Component/Rayout/BottomContainer';
@@ -29,23 +28,31 @@ function App() {
   const handleSearch = async (event) => {
     if (event.key === 'Enter' && location) {
       setIsLoading(true);
+  
+      // 한글 도시명을 영문으로 번역
       const translatedCity = await translateCityName(location);
   
+      // 현재 날씨 데이터 가져오기
       const weatherData = await fetchWeatherData(translatedCity);
       if (weatherData) {
         setData(weatherData);
-        setAdvice('');
         const openAIText = await generateTextWithOpenAI(weatherData, setIsLoading);
         typeText(openAIText, 50);
       }
+  
+      // 7일간의 날씨 예보 데이터 가져오기
       const forecast = await fetchWeatherbitForecastData(translatedCity);
-      if (forecast) {
-        setForecastData(forecast);
+      if (forecast && forecast.data) {
+        setForecastData(forecast.data);
+      } else {
+        console.error("Forecast data not found");
       }
+  
       setIsLoading(false);
       setLocation('');
     }
   };
+
   return (
     <div className='app'>
       <Search location={location} setLocation={setLocation} handleSearch={handleSearch} />

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
 import axios from 'axios';
 
-const OPENAI_API_KEY = "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";
+const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
 //GPT번역함수
 export const translateCityName = async (cityName) => {
@@ -51,7 +50,7 @@ export const generateTextWithOpenAI = async (weatherData, setIsLoading) => {
       {
         model: "gpt-3.5-turbo",
         messages: [{ role: "system", content: `당신은 친구같은 인공지능 챗봇입니다. 
-        입력에 대해 한글로 변역해서 3줄로 짧고 간결하고 파워블로거처럼 편안한 어조로 대답해주세요` },
+        입력에 대해 한글로 변역해서 3줄로 짧고 간결하고 파워블로거가 쓴글처럼 편안한 어조로 대답해주세요` },
                     { role: "user", content: prompt }],
       },
       {

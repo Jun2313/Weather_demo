@@ -5,7 +5,7 @@ const Search = ({ location, setLocation, handleSearch }) => {
   return (
     <div className='search'>
       <div>
-        <p className='bold' style={{fontSize: '30px', paddingBottom:'10%'}}>날씨 정보</p>
+        <p className='bold' style={{fontSize: '30px', paddingBottom:'5%'}}>날씨 정보</p>
       </div>
       <input
         value={location}

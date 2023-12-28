@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_KEY = "6c3b8ec558e36f8f98599f6070da6a43";
-const DAY_KEY = "a5c441ac7b8f46b795f4bfaac4cc755c";
+const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+const DAY_KEY = process.env.REACT_APP_DAY_API_KEY;
 // 날씨 데이터를 가져오는 함수
 export const fetchWeatherData = async (city) => {
   const cleanCity = city.replace(/['"]+/g, '').trim();

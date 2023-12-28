@@ -1,61 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import Slider from 'react-slick';
-import { fetchWeatherbitForecastData } from '../Service/Handler/WeatherAPIHandler';
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
+import React, { useRef, useEffect, useState } from 'react';
+import { getWeatherImage } from '../weatherImages';
 
-const ContentsContainer = ({ city }) => { 
-  const [weatherData, setWeatherData] = useState(null);
+const ContentsContainer = ({ forecastData }) => {
+  const scrollRef = useRef(null);
+  const [scrollBarWidth, setScrollBarWidth] = useState('0%');
+  const scrollSpeed = 2;
 
-  useEffect(() => {
-    const getWeatherData = async () => {
-      if (city) {
-        const data = await fetchWeatherbitForecastData(city);
-        if (data) {
-          setWeatherData(data.data);
-        }
-      }
-    };
-
-    getWeatherData();
-  }, [city]);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 7,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1
-        }
-      }
-    ]
+  const handleScroll = () => {
+    const element = scrollRef.current;
+    const scrollWidth = element.scrollWidth - element.clientWidth;
+    const scrollLeft = element.scrollLeft;
+    const width = (scrollLeft / scrollWidth) * 100;
+    setScrollBarWidth(`${width}%`);
   };
 
+  const handleWheel = (e) => {
+    e.preventDefault();
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft += e.deltaY * scrollSpeed;
+    }
+  };
+
+  useEffect(() => {
+    const currentRef = scrollRef.current;
+    if (currentRef) {
+      currentRef.addEventListener('wheel', handleWheel, { passive: false });
+      currentRef.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (currentRef) {
+        currentRef.removeEventListener('wheel', handleWheel);
+        currentRef.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
+
+
+
   return (
-    <div className='contentsContainer' style={{ padding: '5%' }}>
-      {weatherData ? (
-        <Slider {...settings}>
-          {weatherData.map((day, index) => (
-            <div key={index} className="weatherCard" style={{ marginRight: '20px', minWidth: '150px', textAlign: 'center', border: '1px solid #ccc', padding: '10px', borderRadius: '10px' }}>
-              <div><strong>{day.valid_date}</strong></div>
-              <div style={{ fontSize: '20px', margin: '10px 0' }}>{day.temp}°C</div>
-              <div>High: {day.max_temp}°C</div>
-              <div>Low: {day.min_temp}°C</div>
-              <div>{day.weather.description}</div>
-            </div>
+    <div>
+    {forecastData.length > 0 && (
+      <>
+        <h2 style={{textAlign: 'center', padding: '5%'}}>일주일 기상예보</h2>
+        <div className="scrollbar-container">
+          <div className="custom-scrollbar" style={{ width: scrollBarWidth }}></div>
+        </div>
+      </>
+    )}
+    <div className='contentsContainer' ref={scrollRef}>
+      {Array.isArray(forecastData) && forecastData.length > 0 ? (
+        <div className='scroll'>
+          {forecastData.map((day, index) => (
+            <div key={index} className="weatherCard">
+              <div><strong>{day.valid_date.substring(5)}</strong></div>
+
+              <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
+              <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between'}}>
+                <img src={getWeatherImage(day.weather.description)} alt={day.weather.description} style={{ width: '150px', height: '150px' }} />
+                <div style={{ fontSize: '40px', margin: '10px 0', display: 'flex'}}>{day.temp}°C</div>
+              </div>
+              <div>최고온도: {day.max_temp}°C</div>
+              <div>최저온도: {day.min_temp}°C</div>
+              </div>
+              {/* <div>{day.weather.description}</div> */}
+        </div>
           ))}
-        </Slider>
-      ) : city ? (
-        <p>Loading weather data...</p>
+        </div>
       ) : (
-        <p>Enter a city name</p>
+        <p></p>
       )}
+    </div>
     </div>
   );
 };
