@@ -114,13 +114,16 @@ h1 {
 }
 
 .contentsContainer {
-  padding: 5%;
+  padding: 20px 0;
   overflow-x: auto;
   display: flex;
   justify-content: center;
   scroll-behavior: smooth;
   overflow-x: auto;
   white-space: nowrap;
+  background-color: rgba(220,220,220,0.2);
+  width: 600px;
+  border-radius: 20px;
 }
 
 .scroll {
@@ -138,7 +141,7 @@ h1 {
   padding: 10px;
   border-radius: 20px;
   margin-right: 20px;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   /* margin-left: 10px;  */
 }
 

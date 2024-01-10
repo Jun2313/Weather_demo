@@ -42,7 +42,7 @@ const ContentsContainer = ({ forecastData }) => {
     <div>
     {forecastData.length > 0 && (
       <>
-        <h2 style={{textAlign: 'center', padding: '5%'}}>일주일 기상예보</h2>
+        <h2 style={{textAlign: 'center', padding: '20px'}}>일주일 기상예보</h2>
         <div className="scrollbar-container">
           <div className="custom-scrollbar" style={{ width: scrollBarWidth }}></div>
         </div>
@@ -53,15 +53,17 @@ const ContentsContainer = ({ forecastData }) => {
         <div className='scroll'>
           {forecastData.map((day, index) => (
             <div key={index} className="weatherCard">
-              <div><strong>{day.valid_date.substring(5)}</strong></div>
+              <div style={{fontSize: '30px'}}><strong>{day.valid_date.substring(5)}</strong></div>
 
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
               <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between'}}>
                 <img src={getWeatherImage(day.weather.description)} alt={day.weather.description} style={{ width: '150px', height: '150px' }} />
-                <div style={{ fontSize: '40px', margin: '10px 0', display: 'flex'}}>{day.temp}°C</div>
+                <div style={{ fontSize: '50px', margin: '10px 0', display: 'flex'}}>{day.temp}°</div>
               </div>
-              <div>최고온도: {day.max_temp}°C</div>
-              <div>최저온도: {day.min_temp}°C</div>
+              <div style={{display: 'flex', width: '100%', justifyContent:'space-evenly'}}>
+              <div>최고: {day.max_temp}°</div>
+              <div>최저: {day.min_temp}°</div>
+              </div>
               </div>
               {/* <div>{day.weather.description}</div> */}
         </div>

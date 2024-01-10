@@ -18,7 +18,8 @@ export const getWeatherImage = (weatherDescription) => {
     case 'partly cloudy': return clearThenCloudy;
     case 'thunderstorm': 
     case 'lightning': return lightning;
-    case 'snow': return snow;
+    case 'snow': 
+    case 'light snow' :return snow;
     case 'cloudy': return cloudyWind;
     case 'rain': return rain;
     case 'rain and wind': return rainAndWind;
@@ -26,6 +27,7 @@ export const getWeatherImage = (weatherDescription) => {
     case 'scattered clouds': 
     case 'broken clouds': return clouds;
     case 'mix snow/rain':
+    case 'right shower rain':
     case 'mixed snow and rain': return mixSnowRain;
     case 'moderate rain': return moderateRain;
     default: return null;
