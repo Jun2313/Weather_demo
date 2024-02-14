@@ -57,7 +57,7 @@ const ContentsContainer = ({ forecastData }) => {
 
               <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end'}}>
               <div style={{ display: 'flex', width: '100%', justifyContent: 'space-between'}}>
-                <img src={getWeatherImage(day.weather.description)} alt={day.weather.description} style={{ width: '150px', height: '150px' }} />
+                <img src={getWeatherImage(day.weather.description)} alt={day.weather.description} style={{ width: '80px', height: '80px' }} />
                 <div style={{ fontSize: '50px', margin: '10px 0', display: 'flex'}}>{day.temp}°</div>
               </div>
               <div style={{display: 'flex', width: '100%', justifyContent:'space-evenly'}}>
