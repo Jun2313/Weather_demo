@@ -1,19 +1,13 @@
-import sunny from '../assets/weather/sunny.png';
-import clearThenCloudy from '../assets/weather/clear_then_cloudy.png';
-import lightning from '../assets/weather/lightning.png';
-import snow from '../assets/weather/snow.png';
-import cloudyWind from '../assets/weather/cloudy_wind.png';
-import rain from '../assets/weather/rain.png';
-import clouds from '../assets/weather/clouds.png';
-// import rainAndWind from '../assets/weather/rain_and_wind.png';
-// import mixSnowRain from '../assets/weather/mix_snow_rain.png';
-// import moderateRain from '../assets/weather/moderate_rain.png';
-// import r04d from '../assets/weather/r04d.png';
-// import heavyRain from '../assets/weather/heavy_rain.png';
-import drizzle from '../assets/weather/drizzle.png';
-import thunderstorm from '../assets/weather/thunderstorm.png'
-import mist from '../assets/weather/mist.png';
-import haze from '../assets/weather/haze.png';
+import sunny from '../assets/sunny.png';
+import clearThenCloudy from '../assets/clear_then_cloudy.png';
+import snow from '../assets/snow.png';
+import cloudyWind from '../assets/cloudy_wind.png';
+import rain from '../assets/rain.png';
+import clouds from '../assets/clouds.png';
+import drizzle from '../assets/drizzle.png';
+import thunderstorm from '../assets/thunderstorm.png'
+import mist from '../assets/mist.png';
+import haze from '../assets/haze.png';
 
 export const getWeatherImage = (weatherDescription) => {
   switch(weatherDescription.toLowerCase()) {
