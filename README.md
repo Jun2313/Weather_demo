@@ -11,3 +11,6 @@
 - 일주일의 날씨를 받아올수있도록 weatherbit OpenAPI를 사용했습니다.
 1. 이미지파일을 수정했습니다.
 2. 사이즈 수정했습니다.
+
+  
+![스크린샷 2024-01-10 142846](https://github.com/Jun2313/Weather_demo/assets/137971423/a04ab3eb-e4c1-48bc-96d1-65c844e1ddd5)
